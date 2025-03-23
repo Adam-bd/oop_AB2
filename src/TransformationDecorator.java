@@ -38,6 +38,10 @@ public class TransformationDecorator extends ShapeDecorator{
             helper.transform = "";
             if(translate){
                 helper.transform += "translate(" + this.translation.x() + " " + this.translation.y() + ") ";
+            }else if(rotate){
+                helper.transform += "rotate(" + this.center.x() + " " + this.center.y() + ") ";
+            }else if(scale){
+                helper.transform += "scale(" + this.scaleFactor.x() + " " + this.scaleFactor.y() + ") ";
             }
             return helper;
         }

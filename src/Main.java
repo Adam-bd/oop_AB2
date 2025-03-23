@@ -32,18 +32,20 @@ public class Main {
         }, "red");
 
         Shape shape1 = new SolidFillShapeDecorator(pentagon, "red");
-        Shape shape2 = new SolidFillShapeDecorator(ellipse, "green");
+        Shape shape2 = new SolidFillShapeDecorator(ellipse, "purple");
+        Shape shape3 = new SolidFillShapeDecorator(triangle, "purple");
         shape1 = new StrokeShapeDecorator(shape1, "blue", 5.0);
         shape2 = new StrokeShapeDecorator(shape2, "blue", 8.0);
+        shape3 = new TransformationDecorator(shape3);
 
         SvgScene scene = new SvgScene();
-        scene.addShape(triangle);
         scene.addShape(rectangle);
         scene.addShape(pentagon);
         scene.addShape(ellipse);
         scene.addShape(obj1);
         scene.addShape(shape1);
         scene.addShape(shape2);
+        scene.addShape(shape3);
         scene.save("result.svg");
     }
 }
