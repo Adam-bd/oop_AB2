@@ -2,11 +2,12 @@ import java.util.Locale;
 
 public class SolidFilledPolygon extends Polygon{
     private String color;
-    public SolidFilledPolygon(Vec2[] points, String color) {
+    public SolidFilledPolygon(String color, Vec2[] points){
         super(points);
         this.color = color;
     }
-    public String toSvg(String additional){
-        return super.toSvg(String.format(Locale.US, "fill=\"%s\" %s ", color, additional));
+
+    public String toSvg(String parameters){
+        return super.toSvg(String.format(Locale.ENGLISH, "fill=\"%s\" %s ", color, parameters));
     }
 }

@@ -1,15 +1,16 @@
 import java.util.Locale;
 
-public class StrokeShapeDecorator extends ShapeDecorator{
-    private String color;
-    private double width;
+public class StrokeShapeDecorator extends ShapeDecorator {
+    String color;
+    double width;
 
-    public StrokeShapeDecorator(Shape decoratedShape, String color, double width) {
-        super(decoratedShape);
+    public StrokeShapeDecorator(Shape shape, String color, double width) {
+        super(shape);
         this.color = color;
         this.width = width;
     }
-    public String toSvg(String additional){
-        return super.toSvg(String.format(Locale.US,"stroke=\"%s\" stroke-width=\"%f\" ", color, width));
+
+    public String toSvg(String parameters){
+        return decoratedShape.toSvg(String.format(Locale.ENGLISH, "stroke=\"%s\" stroke-width=\"%f\" %s ", color, width, parameters));
     }
 }

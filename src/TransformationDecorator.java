@@ -1,49 +1,59 @@
-public class TransformationDecorator extends ShapeDecorator{
-    private String transform;
-    public TransformationDecorator(Shape decoratedShape) {
-        super(decoratedShape);
+import java.util.Locale;
+
+public class TransformationDecorator extends ShapeDecorator {
+    //String translate, rotate, scale;
+    private String transform;  //"translate rotate scale"
+
+    public TransformationDecorator(Shape shape) {
+        super(shape);
     }
 
-    public String toSvg(String additional){
-        return super.toSvg(additional);
+    @Override
+    public String toSvg(String parameters) {
+        return decoratedShape.toSvg(String.format(Locale.ENGLISH, "transform=\"%s\" %s", transform, parameters));
     }
 
-    public class Builder {
-        private Vec2 translation;
-        private Vec2 center;
-        private float angle;
-        private Vec2 scaleFactor;
-        private boolean translate = false;
-        private boolean rotate = false;
-        private boolean scale = false;
+    public static class Builder {
+        private boolean translate = false, rotate = false, scale = false;
+        private Vec2 translateVector, rotateCenter, scaleVector;
+        private double rotateAngle;
+        private Shape shape;
 
-        Builder translate(Vec2 translation){
-            this.translation = translation;
+        public Builder translate(Vec2 translateVector) {
             translate = true;
+            this.translateVector = translateVector;
             return this;
         }
-        Builder rotate(float angle, Vec2 center){
-            this.angle = angle;
-            this.center = center;
+
+        public Builder rotate(Vec2 rotateCenter, double rotateAngle) {
             rotate = true;
+            this.rotateCenter = rotateCenter;
+            this.rotateAngle = rotateAngle;
             return this;
         }
-        Builder scale(Vec2 scaleFactor){
-            this.scaleFactor = scaleFactor;
+
+        public Builder scale(Vec2 scaleVector) {
             scale = true;
+            this.scaleVector = scaleVector;
             return this;
         }
-        TransformationDecorator build(Shape shape){
-            TransformationDecorator helper = new TransformationDecorator(shape);
-            helper.transform = "";
-            if(translate){
-                helper.transform += "translate(" + this.translation.x() + " " + this.translation.y() + ") ";
-            }else if(rotate){
-                helper.transform += "rotate(" + this.center.x() + " " + this.center.y() + ") ";
-            }else if(scale){
-                helper.transform += "scale(" + this.scaleFactor.x() + " " + this.scaleFactor.y() + ") ";
+
+        public TransformationDecorator build(Shape shape) {
+            TransformationDecorator obj = new TransformationDecorator(shape);
+            obj.transform = "";
+            if (translate) {
+                obj.transform = String.format(Locale.ENGLISH, "translate(%f %f) ",
+                        translateVector.x(), translateVector.y());
             }
-            return helper;
+            if (rotate) {
+                obj.transform = String.format(Locale.ENGLISH, "%s rotate(%f %f %f) ",
+                        obj.transform, rotateAngle, rotateCenter.x(), rotateCenter.y());
+            }
+            if (scale) {
+                obj.transform = String.format(Locale.ENGLISH, "%s scale(%f %f) ",
+                        obj.transform, scaleVector.x(), scaleVector.y());
+            }
+            return obj;
         }
     }
 }
